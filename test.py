@@ -52,3 +52,12 @@ class Labyrinth:
 """
 l = Labyrinth()
 print(l.position)
+
+
+"""
+
+
+
+"""
+
+

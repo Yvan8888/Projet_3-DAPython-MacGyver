@@ -9,7 +9,7 @@ class Main:
 	def __init__(self):
 		pygame.init()
 
-		self.size = width, height = 300, 300
+		self.size = width, height = 600, 600
 
 		self.title = pygame.display.set_caption("Labyrinth")
 
@@ -21,47 +21,62 @@ class Main:
 		self.screen.blit(self.background,(0,0))
 
 		self.labyrinth = Labyrinth(self.screen)
-
-
-
-	def collide(self):
-		pass
+		self.macgyver = MacGyver(self.screen)
 
 	def loop(self):
+
 		done = False
 		while not done:
+
+			self.labyrinth.display(self.screen)
+			pygame.display.flip()
+
 			for event in pygame.event.get():
+
+				if event.type == KEYDOWN:
+#					self.macgyver.collide(self.labyrinth, position)
+					if event.key == K_RIGHT:
+						self.macgyver.move_right(self.screen)
+
+					elif event.key == K_LEFT:
+						self.macgyver.move_left(self.screen)
+
+					elif event.key == K_UP:
+						self.macgyver.move_up(self.screen)
+
+					elif event.key == K_DOWN:
+						self.macgyver.move_down(self.screen)
+
 				if event.type == pygame.QUIT:
 					done = True
 
 		pygame.quit()
 
-		while True:
-			self.labyrinth.display(self.screen)
-			pygame.display.flip()
+#		while True:
+#			self.labyrinth.display(self.screen)
+#			pygame.display.flip()
 
-	def move(self):
-		macgyver = MacGyver()
-		macgyver.move_right()
-		macgyver.move_left()
-		macgyver.move_up()
-		macgyver.move_down()
+	def collecting_items(self):
+		for key, value in self.position.items():
+			x = key[0] * 20
+			y = key[1] * 20
+			if value == "E" and self.macgyver.position.get((x, y)) == "E":
+				add_item_to_backpack("Ether")
 
-		while True:
-			for event in pygame.event.get():
+			elif value == "N" and self.macgyver.position.get((x, y)) == "N":
+				add_item_to_backpack("Needle")
 
-				if event.type==KEYDOWN:
-					if event.key == K_RIGHT:
-						self.labyrinth.move_right()
+			elif value == "T" and self.macgyver.position.get((x, y)) == "T":
+				add_item_to_backpack("Tube")
 
-					elif event.key == K_LEFT:
-						self.labyrinth.move_left()
+		if len(backpack) == 3:
+			print('All items are collected, you can face the guardian.')
 
-					elif event.key == K_UP:
-						self.labyrinth.move_up()
+		elif len(backpack) == 2:
+			print('Only 1 item is missing.')
 
-					elif event.key == K_DOWN:
-						self.labyrinth.move_down()
+		elif len(backpack) == 1:
+			print('Go on! 2 items left.')
 
 
 
