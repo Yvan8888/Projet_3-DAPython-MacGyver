@@ -7,7 +7,7 @@ class MacGyver:
 
 	def __init__(self, screen, labyrinth):
 
-		# Size in pixels of a sprite.
+		# Initial position.
 		self.x = 40
 		self.y = 40
 
