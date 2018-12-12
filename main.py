@@ -1,17 +1,19 @@
 import pygame
 
-from pygame.locals import *
+from pygame.constants import KEYDOWN, QUIT, K_RIGHT, K_LEFT, K_UP, K_DOWN
 
 from labyrinth import Labyrinth
 from macgyver import MacGyver
 
 
 class Main:
-
+	"""
+	g
+	"""
 	def __init__(self):
 		pygame.init()
 
-		self.size = width, height = 600, 700
+		self.size = 600, 700
 
 		self.title = pygame.display.set_caption("Labyrinth")
 
@@ -39,7 +41,7 @@ class Main:
 					(255, 255, 255))
 		self.screen.blit(instructions, (20, 620))
 
-		backpack = font.render("Your backpack contains: " , 1, (255, 255, 255))
+		backpack = font.render("Your backpack contains: ", 1, (255, 255, 255))
 		self.screen.blit(backpack, (40, 640))
 
 	def loop(self):
@@ -75,6 +77,3 @@ class Main:
 if __name__ == '__main__':
 	main = Main()
 	main.loop()
-
-
-

@@ -1,4 +1,5 @@
 import pygame
+import os
 
 from pygame.locals import *
 
@@ -20,7 +21,7 @@ class MacGyver:
 		self.labyrinth = labyrinth
 
 		# Display MacGyver on the screen.
-		self.player = pygame.image.load('Ressource/MacGyver2.png').convert()
+		self.player = pygame.image.load(os.path.join('Ressource', 'MacGyver2.png')).convert()
 		screen.blit(self.player, (self.x, self.y))
 		pygame.display.update()
 
@@ -87,6 +88,14 @@ class MacGyver:
 			screen.blit(label7, (140, 640))
 
 		pygame.display.update()
+
+	def collide(self, dest):
+
+		# Return new position of MacGyver
+		return self.labyrinth.position[dest]
+
+	def add_item_to_backpack(self, item):
+		self.backpack.append(item)
 
 	def move_right(self, screen):
 
@@ -195,13 +204,5 @@ class MacGyver:
 
 			self.show_backpack(screen)
 
-
-	def collide(self, dest):
-
-		# Return new position of MacGyver
-		return self.labyrinth.position[dest]
-
-	def add_item_to_backpack(self, item):
-		self.backpack.append(item)
 
 
