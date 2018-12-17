@@ -1,33 +1,36 @@
+"""
+Item
+"""
 import random
 
 
 class Items:
+    """
+    Generate and assign a random position to the 3 items.
+    """
 
-	def __init__(self, position, labyrinth):
+    def __init__(self, labyrinth):
 
-		self.x = 0
-		self.y = 0
+        self.i_x = 0
+        self.i_y = 0
 
-		self.random_position(position, labyrinth)
+        self.random_position(labyrinth)
 
-	def random_position(self, position, labyrinth):
-		items_available = ['E', 'N', 'T']
+    def random_position(self, labyrinth):
+        """
+        Gives a random position to the 3 items.
+        """
+        items_available = ['E', 'N', 'T']
 
-		for i in range(3):
+        while items_available != []:
 
-			done = False
-			while not done:
-				self.x = random.randint(0, 14)
-				self.y = random.randint(0, 14)
+            done = False
+            while not done:
+                self.i_x = random.randint(0, 14)
+                self.i_y = random.randint(0, 14)
 
-				if labyrinth.position[(self.x, self.y)] == " ":
-					labyrinth.position[(self.x, self.y)] = random.choice(items_available)
-					assign_item = labyrinth.position[(self.x, self.y)]
-					items_available.remove(assign_item)
-					done = True
-
-
-
-
-
-
+                if labyrinth.position[(self.i_x, self.i_y)] == " ":
+                    labyrinth.position[(self.i_x, self.i_y)] = random.choice(items_available)
+                    assign_item = labyrinth.position[(self.i_x, self.i_y)]
+                    items_available.remove(assign_item)
+                    done = True

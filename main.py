@@ -1,79 +1,130 @@
+"""
+Welcome to this labyrinth
+"""
 import pygame
 
-from pygame.constants import KEYDOWN, QUIT, K_RIGHT, K_LEFT, K_UP, K_DOWN
+from pygame.constants import KEYDOWN, K_RIGHT, K_LEFT, K_UP, K_DOWN, K_SPACE
 
 from labyrinth import Labyrinth
 from macgyver import MacGyver
 
 
 class Main:
-	"""
-	g
-	"""
-	def __init__(self):
-		pygame.init()
+    """
+    Main class handles labyrinth set up,
+    display of informations,
+    and how to move macgyver.
+    """
+    def __init__(self):
+        pygame.init()
 
-		self.size = 600, 700
+        self.size = 600, 700
 
-		self.title = pygame.display.set_caption("Labyrinth")
+        self.screen = pygame.display.set_mode(self.size)
+        pygame.display.flip()
 
-		self.screen = pygame.display.set_mode(self.size)
-		pygame.display.flip()
+        self.title = pygame.display.set_caption("Labyrinth")
 
-		self.background = pygame.Surface(self.size)
+        self.background = pygame.Surface(self.size)
 
-		self.screen.blit(self.background,(0,0))
+        self.screen.blit(self.background, (0, 0))
 
-		# Create the labyrinth.
-		self.labyrinth = Labyrinth(self.screen)
+        # Create the labyrinth.
+        self.labyrinth = Labyrinth()
 
-		# Create the player.
-		self.macgyver = MacGyver(self.screen, self.labyrinth)
+        # Create the player.
+        self.macgyver = MacGyver(self.screen, self.labyrinth)
 
-		self.information()
+        self.information()
 
-	def information(self):
-		font = pygame.font.SysFont("monospace", 17)
+    def information(self):
+        """
+        Display useful informaton below the labyrinth.
+        """
 
-		instructions = font.render(
-					"After having picked up all the items, you can face the guardian",
-					1, 
-					(255, 255, 255))
-		self.screen.blit(instructions, (20, 620))
+        font = pygame.font.SysFont("monospace", 17)
 
-		backpack = font.render("Your backpack contains: ", 1, (255, 255, 255))
-		self.screen.blit(backpack, (40, 640))
+        instructions = font.render(
+            "After having picked up all the items, you can face the guardian",
+            1,
+            (255, 255, 255))
+        self.screen.blit(instructions, (20, 620))
 
-	def loop(self):
+        backpack = font.render("Your backpack contains: ", 1, (255, 255, 255))
+        self.screen.blit(backpack, (40, 640))
 
-		# Display labyrinth on the screen and allow for updates.
-		self.labyrinth.display(self.screen)
-		pygame.display.flip()
+    def loop(self):
+        """
+        How to move macgyver.
+        """
 
-		# Allow to move MacGyver
-		done = False
-		while not done:
+        # Display labyrinth on the screen and allow for updates.
+        self.labyrinth.display(self.screen)
+        pygame.display.flip()
 
-			for event in pygame.event.get():
+        # Allow to move MacGyver
+        done = False
+        done2 = False
+        while not done:
 
-				if event.type == KEYDOWN:
-					if event.key == K_RIGHT:
-						self.macgyver.move_right(self.screen)
+            for event in pygame.event.get():
 
-					elif event.key == K_LEFT:
-						self.macgyver.move_left(self.screen)
+                if event.type == KEYDOWN:
 
-					elif event.key == K_UP:
-						self.macgyver.move_up(self.screen)
+                    make_the_move = ""
 
-					elif event.key == K_DOWN:
-						self.macgyver.move_down(self.screen)
+                    if event.key == K_RIGHT:
+                        make_the_move = self.macgyver.collide((
+                            self.macgyver.mc_x // 40 + 1,
+                            self.macgyver.mc_y // 40))
+                        self.macgyver.move(self.screen, "right", make_the_move)
 
-			if event.type == pygame.QUIT:
-					done = True
+                    elif event.key == K_LEFT:
+                        make_the_move = self.macgyver.collide((
+                            self.macgyver.mc_x // 40 - 1,
+                            self.macgyver.mc_y // 40))
+                        self.macgyver.move(self.screen, "left", make_the_move)
 
-		pygame.quit()
+                    elif event.key == K_UP:
+                        make_the_move = self.macgyver.collide((
+                            self.macgyver.mc_x // 40,
+                            self.macgyver.mc_y // 40 - 1))
+                        self.macgyver.move(self.screen, "up", make_the_move)
+
+
+                    elif event.key == K_DOWN:
+                        make_the_move = self.macgyver.collide((
+                            self.macgyver.mc_x // 40,
+                            self.macgyver.mc_y // 40 + 1))
+                        self.macgyver.move(self.screen, "down", make_the_move)
+
+                    final_position = self.macgyver.collide((
+                        self.macgyver.mc_x // 40,
+                        self.macgyver.mc_y // 40))
+
+                    # When game is over, not able to move around anymore.
+                    if make_the_move == "A":
+                        done = True
+
+                    # When game is won, not able to move around anymore.
+                    if final_position == "A":
+                        self.macgyver.win(self.screen)
+                        done = True
+
+                    # To quit the game.
+                    if event.key == K_SPACE:
+                        done = True
+                        done2 = True
+
+        while not done2:
+
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    done2 = True
+
+        quit()
 
 if __name__ == '__main__':
-	main = Main()
-	main.loop()
+    MAIN = Main()
+    MAIN.loop()
