@@ -3,6 +3,8 @@
 MacGyver needs to escape the labyrinth. To do this, he has to face the guardian. But, in order to beat him, he has to collect 3 items first.
 
 MacGyver is movable with the keyboard commands button.
+To quit the game before the game was won or was over, press the space bar.
+To quit the game after the game was won or was over, close the window. 
 
 ## Getting Started
 
